@@ -1,11 +1,48 @@
-import React from 'react'
+import React from "react";
+import { ModeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
+
+const navmenu = [
+  "Home",
+  "About Us",
+  "Our Team",
+  "Resources",
+  "Testimonials",
+  "Contact Us",
+];
 
 function Navbar() {
   return (
-    <div className="w-[1152px] h-[76px] ">
-        Navbar
-    </div>
-  )
+    <nav className="fixed top-0 left-0 w-full z-50">
+      <div className="mx-auto w-[1152px] h-[76px] flex justify-between items-center px-6 bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-xl shadow-md border border-gray-200 dark:border-white/20 transition-all duration-300">
+        <div className="flex items-center gap-x-2">
+          <Image src={"/logo.svg"} width={44} height={44} alt="logo" />
+          <span className="font-bold text-[#0077B6] dark:text-[#0077B6]/70 text-xl lg:text-2xl">
+            HACKAUT
+          </span>
+        </div>
+
+        <div className="flex items-center gap-x-4">
+          <ul className="flex items-center gap-x-6 text-gray-800 dark:text-gray-200 font-medium">
+            {navmenu.map((item) => (
+              <li
+                key={item}
+                className="relative cursor-pointer group hover:text-blue-600 dark:hover:text-blue-400 transition duration-200"
+              >
+                {item}
+                <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="ml-4">
+            {/* ModeToggle will handle its own focus style */}
+            <ModeToggle />
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 }
 
-export default Navbar
+export default Navbar;
