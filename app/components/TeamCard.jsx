@@ -1,0 +1,26 @@
+import React from "react";
+import Image from "next/image";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaGithub, FaLinkedin ,FaInstagram  } from "react-icons/fa";
+export const TeamCard = (props) => {
+  return (
+   <>
+    <div className="max-w-sm rounded-[1.2rem] overflow-hidden shadow-lg border-sky-500 border-4 resize-none w-55 ">
+    <Image className="inline-block rounded-[2rem] p-3 " src={props.images} alt="person" height={100}  effect="blur"/>
+    <div className="px-6">
+    <div className="font-bold text-xl">{props.name}</div>
+    <p className="text-gray-700 text-base">
+     {props.role}<br/>
+     {props.stack}
+    </p>
+  </div> 
+  <div className="px-6 pt-4 pb-2">
+  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><a href={props.github} className="text-gray-600 transition-colors duration-300 hover:text-black"><FaGithub size={20}></FaGithub></a></span>
+    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><a href={props.linkdin} className="text-gray-600 transition-colors duration-300 hover:text-black"><FaLinkedin size={20}></FaLinkedin></a></span>
+    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><a href={props.linkdin} className="text-gray-600 transition-colors duration-300 hover:text-black"><FaXTwitter  size={20}></FaXTwitter ></a></span>
+    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><a href={props.linkdin} className="text-gray-600 transition-colors duration-300 hover:text-black"><FaInstagram  size={20}></FaInstagram ></a></span>
+  </div>
+</div>
+</>
+  );
+};
