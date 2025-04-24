@@ -1,7 +1,7 @@
 import React from "react";
 import { TeamCard } from "@/app/components/TeamCard";
 import { teamDetails } from "@/app/components/teamdetails"; 
-import MultipleItems from "../components/Core";
+import CarouselDemo from "@/app/components/CarouselDemo";
 export default function TeamPage() {
     return(
     <>
@@ -18,15 +18,15 @@ export default function TeamPage() {
     </section>
     <section className="text-center"><p className="inline-block text-xxl px-3 py-px font-semibold text-white uppercase rounded-full bg-sky-500 mb-8">Leaders</p>
     <div className="flex flex-wrap gap-16 justify-center mb-10">
-          <TeamCard name={teamDetails.SaikatBasu.name} role="Principal Advisor (HOD of CSE)" stack="ML, IOT, Cryptography" images={teamDetails.SaikatBasu.image}/>
-          <TeamCard name={teamDetails.JoySamadder.name} role="Chairman" stack="IoT, Full Stack Development, Web Analytics, Cybersecurity" images={teamDetails.JoySamadder.image}/>
-          <TeamCard name={teamDetails.SaikatBasu.name} role="Principal Advisor (HOD of CSE)" stack="ML, IOT, Cryptography" images={teamDetails.SaikatBasu.image}/>
-          <TeamCard name={teamDetails.JoySamadder.name} role="Chairman" stack="IoT, Full Stack Development, Web Analytics, Cybersecurity" images={teamDetails.JoySamadder.image}/>
+          <TeamCard name={teamDetails. Sougata.name} role="President" stack="Golang,Python,ML" images={teamDetails.Sougata.image}/>
+          <TeamCard name={teamDetails.Ishita.name} role="Vice President" stack="AI,Python,Javascript" images={teamDetails.Ishita.image}/>
+          <TeamCard name={teamDetails.Achintya.name} role="General Secretary" stack="Java,Kotlin,Flutter" images={teamDetails.Achintya.image}/>
+          <TeamCard name={teamDetails.Taha.name} role="Secretary" stack="JavaScript,Design" images={teamDetails.Taha.image}/>
     </div>
     </section>
     <section className="text-center"><p className="inline-block text-xxl px-3 py-px font-semibold text-white uppercase rounded-full bg-sky-500 mb-8">Core Members</p>
     <div className="flex flex-wrap gap-16 justify-center mb-10">
-      {/* <MultipleItems/> */}
+      <CarouselDemo images={teamDetails.Taha.image} />
     </div>
     </section>
     </div>
