@@ -33,6 +33,22 @@ export default function TeamPage() {
                 {
                   src: "https://images.unsplash.com/photo-1679420437432-80cfbf88986c?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 },
+                {
+                  src: "https://images.unsplash.com/photo-1679420437432-80cfbf88986c?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                }, {
+                  src: "https://images.unsplash.com/photo-1590041794748-2d8eb73a571c?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  src: "https://images.unsplash.com/photo-1679420437432-80cfbf88986c?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  src: "https://images.unsplash.com/photo-1679420437432-80cfbf88986c?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                }, {
+                  src: "https://images.unsplash.com/photo-1590041794748-2d8eb73a571c?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  src: "https://images.unsplash.com/photo-1679420437432-80cfbf88986c?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
           ];
     return(
     <>
@@ -47,14 +63,14 @@ export default function TeamPage() {
     </div>
     </section>
     <section className="text-center"><p className="inline-block text-xxl px-3 py-px font-semibold text-white uppercase rounded-full bg-sky-500 mb-8">Leaders</p>
-    <div className="flex flex-wrap gap-16 justify-center mb-10">
+    <div className="flex flex-wrap gap-16 justify-center mb-20">
           <TeamCard name={teamDetails. Sougata.name} role="President" stack="Golang,Python,ML" images={teamDetails.Sougata.image}/>
           <TeamCard name={teamDetails.Ishita.name} role="Vice President" stack="AI,Python,Javascript" images={teamDetails.Ishita.image}/>
           <TeamCard name={teamDetails.Achintya.name} role="General Secretary" stack="Java,Kotlin,Flutter" images={teamDetails.Achintya.image}/>
           <TeamCard name={teamDetails.Taha.name} role="Secretary" stack="JavaScript,Design" images={teamDetails.Taha.image}/>
     </div>
     </section>
-    <section className="text-center overflow-hidden"><p className="inline-block text-xxl px-3 font-semibold text-white uppercase rounded-full bg-sky-500 mb-8 ">Core Members</p>
+    <section className="text-center overflow-hidden"><p className="inline-block text-xxl px-3 font-semibold text-white uppercase rounded-full bg-sky-500 mb-10 ">Core Members</p>
     <Carousel slides={slideData } />
     </section>
     </div>

@@ -155,10 +155,10 @@ export default function Carousel({
 
   return (
     <div
-      className="relative w-[100vmin] h-[70vmin] mx-auto overflow-hidden"
+      className="relative w-[100%] h-[70vmin] mx-auto overflow-hidden"
       aria-labelledby={`carousel-heading-${id}`}>
       <ul
-        className="absolute flex mx-[-4vmin] transition-transform duration-1000 ease-in-out"
+        className="absolute flex mx-[-4vmin] transition-transform duration-1000 ease-in-out "
         style={{
           transform: `translateX(-${current * (100 / slides.length)}%)`,
         }}>
