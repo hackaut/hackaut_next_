@@ -81,7 +81,7 @@ const Slide = ({
           <img
             className="absolute inset-0 w-[120%] h-[120%] object-cover opacity-100 transition-opacity duration-600 ease-in-out"
             style={{
-              opacity: current === index ? 1 : 0.5,
+              opacity: current === index ? 1 : 0.9,
             }}
             alt={title}
             src={src}
@@ -170,7 +170,7 @@ export default function Carousel({
             handleSlideClick={handleSlideClick} />
         ))}
       </ul>
-      <div className="absolute flex justify-center w-full top-[calc(60%+1rem)]">
+      <div className="absolute flex justify-between w-full top-[calc(60%+1rem)]">
         <CarouselControl
           type="previous"
           title="Go to previous slide"
