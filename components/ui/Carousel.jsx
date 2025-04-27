@@ -71,8 +71,7 @@ const Slide = ({
           transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
           transformOrigin: "bottom",
         }}>
-        <div
-          className="absolute top-0 left-0 w-full h-full bg-[#1D1F2F] rounded-[50%] overflow-hidden transition-all duration-150 ease-out border-sky-500 border-4"
+        <div className="absolute top-0 left-0 w-full h-full bg-[#1D1F2F] rounded-[50%] overflow-hidden transition-all duration-150 ease-out border-[#0077B6] border-4"
           style={{
             transform:
               current === index
