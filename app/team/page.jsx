@@ -5,7 +5,7 @@ import Carousel from "@/components/ui/Carousel";
 export default function TeamPage() {
     return(
     <>
-     <div className="w-full h- full flex flex-col justify-center items-center gap-16 ">
+     <div className="w-full flex flex-col justify-center items-center gap-16  ">
      <div className=" w-full max-w-[1152px] mt-24 px-6 py-5 bg-white/40  dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300">
      <h1 className="text-6xl font-extrabold text-[#0077B6] mb-4 ">OUR TEAM</h1>
      <p className="font-bold text-xl mb-10">Meet our team, which aims at cultivating, drilling & growing our community to enrich & prosper the overall tech culture, be a member and contribute to be include in our team.</p>
@@ -27,7 +27,7 @@ export default function TeamPage() {
     <Carousel slides={slideData } />
     </section>
     </div>
-    <div className="w-[90px] h-[10px] bg-[#0077B6] dark:bg-[#0077B6]/70 post"/>
+    <div className="w-[90px] h-[10px] bg-[#0077B6] dark:bg-[#0077B6]/70 "/>
     </div>
     </>
   )}
