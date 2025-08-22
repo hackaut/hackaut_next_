@@ -1,6 +1,7 @@
 import FeaturesSection from "./components/features-section";
 import HeroSection from "./components/hero-section";
 import Navbar from "./components/navbar";
+import TeamSection from "./components/our-team-seaction";
 
 export default function Home() {
   
@@ -9,6 +10,7 @@ export default function Home() {
       {/* <Navbar /> */}
       <HeroSection />
       <FeaturesSection />
+      <TeamSection />
 
       <div className="h-full"></div>
     </div>
