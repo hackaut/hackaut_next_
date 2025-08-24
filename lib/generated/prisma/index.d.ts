@@ -57,7 +57,7 @@ export const ResourceType: typeof $Enums.ResourceType
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -89,13 +89,6 @@ export class PrismaClient<
    * Disconnect from the database
    */
   $disconnect(): $Utils.JsPromise<void>;
-
-  /**
-   * Add a middleware
-   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
-   * @see https://pris.ly/d/extensions
-   */
-  $use(cb: Prisma.Middleware): void
 
 /**
    * Executes a prepared raw query and returns the number of affected rows.
@@ -243,8 +236,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.8.2
-   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+   * Prisma Client JS version: 6.14.0
+   * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
    */
   export type PrismaVersion = {
     client: string
@@ -840,16 +833,24 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Defaults to stdout
+     * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events
+     * // Emit as events only
      * log: [
-     *   { emit: 'stdout', level: 'query' },
-     *   { emit: 'stdout', level: 'info' },
-     *   { emit: 'stdout', level: 'warn' }
-     *   { emit: 'stdout', level: 'error' }
+     *   { emit: 'event', level: 'query' },
+     *   { emit: 'event', level: 'info' },
+     *   { emit: 'event', level: 'warn' }
+     *   { emit: 'event', level: 'error' }
      * ]
+     * 
+     * / Emit as events and log to stdout
+     * og: [
+     *  { emit: 'stdout', level: 'query' },
+     *  { emit: 'stdout', level: 'info' },
+     *  { emit: 'stdout', level: 'warn' }
+     *  { emit: 'stdout', level: 'error' }
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -892,10 +893,15 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
-  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
-    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
-    : never
+  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
+
+  export type GetLogType<T> = CheckIsLogLevel<
+    T extends LogDefinition ? T['level'] : T
+  >;
+
+  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
+    ? GetLogType<T[number]>
+    : never;
 
   export type QueryEvent = {
     timestamp: Date
@@ -935,25 +941,6 @@ export namespace Prisma {
     | 'runCommandRaw'
     | 'findRaw'
     | 'groupBy'
-
-  /**
-   * These options are being passed into the middleware as "params"
-   */
-  export type MiddlewareParams = {
-    model?: ModelName
-    action: PrismaAction
-    args: any
-    dataPath: string[]
-    runInTransaction: boolean
-  }
-
-  /**
-   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
-   */
-  export type Middleware<T = any> = (
-    params: MiddlewareParams,
-    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
-  ) => $Utils.JsPromise<T>
 
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
@@ -1022,6 +1009,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
+    isAdmin: boolean | null
     createdAt: Date | null
   }
 
@@ -1030,6 +1018,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
+    isAdmin: boolean | null
     createdAt: Date | null
   }
 
@@ -1038,6 +1027,7 @@ export namespace Prisma {
     name: number
     email: number
     password: number
+    isAdmin: number
     createdAt: number
     _all: number
   }
@@ -1048,6 +1038,7 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
+    isAdmin?: true
     createdAt?: true
   }
 
@@ -1056,6 +1047,7 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
+    isAdmin?: true
     createdAt?: true
   }
 
@@ -1064,6 +1056,7 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
+    isAdmin?: true
     createdAt?: true
     _all?: true
   }
@@ -1145,6 +1138,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    isAdmin: boolean
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -1170,6 +1164,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     resources?: boolean | User$resourcesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1180,6 +1175,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -1188,6 +1184,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -1196,10 +1193,11 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "isAdmin" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     resources?: boolean | User$resourcesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1217,6 +1215,7 @@ export namespace Prisma {
       name: string
       email: string
       password: string
+      isAdmin: boolean
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -1646,6 +1645,7 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -2090,6 +2090,7 @@ export namespace Prisma {
   export type ResourceMinAggregateOutputType = {
     id: string | null
     name: string | null
+    link: string | null
     type: $Enums.ResourceType | null
     authorId: string | null
     createdAt: Date | null
@@ -2098,6 +2099,7 @@ export namespace Prisma {
   export type ResourceMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    link: string | null
     type: $Enums.ResourceType | null
     authorId: string | null
     createdAt: Date | null
@@ -2106,6 +2108,7 @@ export namespace Prisma {
   export type ResourceCountAggregateOutputType = {
     id: number
     name: number
+    link: number
     type: number
     keywords: number
     authorId: number
@@ -2117,6 +2120,7 @@ export namespace Prisma {
   export type ResourceMinAggregateInputType = {
     id?: true
     name?: true
+    link?: true
     type?: true
     authorId?: true
     createdAt?: true
@@ -2125,6 +2129,7 @@ export namespace Prisma {
   export type ResourceMaxAggregateInputType = {
     id?: true
     name?: true
+    link?: true
     type?: true
     authorId?: true
     createdAt?: true
@@ -2133,6 +2138,7 @@ export namespace Prisma {
   export type ResourceCountAggregateInputType = {
     id?: true
     name?: true
+    link?: true
     type?: true
     keywords?: true
     authorId?: true
@@ -2215,6 +2221,7 @@ export namespace Prisma {
   export type ResourceGroupByOutputType = {
     id: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords: string[]
     authorId: string
@@ -2241,6 +2248,7 @@ export namespace Prisma {
   export type ResourceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    link?: boolean
     type?: boolean
     keywords?: boolean
     authorId?: boolean
@@ -2251,6 +2259,7 @@ export namespace Prisma {
   export type ResourceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    link?: boolean
     type?: boolean
     keywords?: boolean
     authorId?: boolean
@@ -2261,6 +2270,7 @@ export namespace Prisma {
   export type ResourceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    link?: boolean
     type?: boolean
     keywords?: boolean
     authorId?: boolean
@@ -2271,13 +2281,14 @@ export namespace Prisma {
   export type ResourceSelectScalar = {
     id?: boolean
     name?: boolean
+    link?: boolean
     type?: boolean
     keywords?: boolean
     authorId?: boolean
     createdAt?: boolean
   }
 
-  export type ResourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "keywords" | "authorId" | "createdAt", ExtArgs["result"]["resource"]>
+  export type ResourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "link" | "type" | "keywords" | "authorId" | "createdAt", ExtArgs["result"]["resource"]>
   export type ResourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -2296,6 +2307,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      link: string
       type: $Enums.ResourceType
       keywords: string[]
       authorId: string
@@ -2726,6 +2738,7 @@ export namespace Prisma {
   interface ResourceFieldRefs {
     readonly id: FieldRef<"Resource", 'String'>
     readonly name: FieldRef<"Resource", 'String'>
+    readonly link: FieldRef<"Resource", 'String'>
     readonly type: FieldRef<"Resource", 'ResourceType'>
     readonly keywords: FieldRef<"Resource", 'String[]'>
     readonly authorId: FieldRef<"Resource", 'String'>
@@ -3163,6 +3176,7 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     password: 'password',
+    isAdmin: 'isAdmin',
     createdAt: 'createdAt'
   };
 
@@ -3172,6 +3186,7 @@ export namespace Prisma {
   export const ResourceScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    link: 'link',
     type: 'type',
     keywords: 'keywords',
     authorId: 'authorId',
@@ -3213,6 +3228,13 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -3269,6 +3291,7 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     resources?: ResourceListRelationFilter
   }
@@ -3278,6 +3301,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     resources?: ResourceOrderByRelationAggregateInput
   }
@@ -3290,6 +3314,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     resources?: ResourceListRelationFilter
   }, "id" | "email">
@@ -3299,6 +3324,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -3313,6 +3339,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
+    isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -3322,6 +3349,7 @@ export namespace Prisma {
     NOT?: ResourceWhereInput | ResourceWhereInput[]
     id?: StringFilter<"Resource"> | string
     name?: StringFilter<"Resource"> | string
+    link?: StringFilter<"Resource"> | string
     type?: EnumResourceTypeFilter<"Resource"> | $Enums.ResourceType
     keywords?: StringNullableListFilter<"Resource">
     authorId?: StringFilter<"Resource"> | string
@@ -3332,6 +3360,7 @@ export namespace Prisma {
   export type ResourceOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    link?: SortOrder
     type?: SortOrder
     keywords?: SortOrder
     authorId?: SortOrder
@@ -3345,6 +3374,7 @@ export namespace Prisma {
     OR?: ResourceWhereInput[]
     NOT?: ResourceWhereInput | ResourceWhereInput[]
     name?: StringFilter<"Resource"> | string
+    link?: StringFilter<"Resource"> | string
     type?: EnumResourceTypeFilter<"Resource"> | $Enums.ResourceType
     keywords?: StringNullableListFilter<"Resource">
     authorId?: StringFilter<"Resource"> | string
@@ -3355,6 +3385,7 @@ export namespace Prisma {
   export type ResourceOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    link?: SortOrder
     type?: SortOrder
     keywords?: SortOrder
     authorId?: SortOrder
@@ -3370,6 +3401,7 @@ export namespace Prisma {
     NOT?: ResourceScalarWhereWithAggregatesInput | ResourceScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Resource"> | string
     name?: StringWithAggregatesFilter<"Resource"> | string
+    link?: StringWithAggregatesFilter<"Resource"> | string
     type?: EnumResourceTypeWithAggregatesFilter<"Resource"> | $Enums.ResourceType
     keywords?: StringNullableListFilter<"Resource">
     authorId?: StringWithAggregatesFilter<"Resource"> | string
@@ -3381,6 +3413,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    isAdmin?: boolean
     createdAt?: Date | string
     resources?: ResourceCreateNestedManyWithoutAuthorInput
   }
@@ -3390,6 +3423,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    isAdmin?: boolean
     createdAt?: Date | string
     resources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
@@ -3399,6 +3433,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
@@ -3408,6 +3443,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
@@ -3417,6 +3453,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    isAdmin?: boolean
     createdAt?: Date | string
   }
 
@@ -3425,6 +3462,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -3433,12 +3471,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResourceCreateInput = {
     id?: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords?: ResourceCreatekeywordsInput | string[]
     createdAt?: Date | string
@@ -3448,6 +3488,7 @@ export namespace Prisma {
   export type ResourceUncheckedCreateInput = {
     id?: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords?: ResourceCreatekeywordsInput | string[]
     authorId: string
@@ -3457,6 +3498,7 @@ export namespace Prisma {
   export type ResourceUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3466,6 +3508,7 @@ export namespace Prisma {
   export type ResourceUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     authorId?: StringFieldUpdateOperationsInput | string
@@ -3475,6 +3518,7 @@ export namespace Prisma {
   export type ResourceCreateManyInput = {
     id?: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords?: ResourceCreatekeywordsInput | string[]
     authorId: string
@@ -3484,6 +3528,7 @@ export namespace Prisma {
   export type ResourceUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3492,6 +3537,7 @@ export namespace Prisma {
   export type ResourceUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     authorId?: StringFieldUpdateOperationsInput | string
@@ -3511,6 +3557,11 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -3539,6 +3590,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -3547,6 +3599,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -3555,6 +3608,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -3574,6 +3628,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -3613,6 +3675,7 @@ export namespace Prisma {
   export type ResourceCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    link?: SortOrder
     type?: SortOrder
     keywords?: SortOrder
     authorId?: SortOrder
@@ -3622,6 +3685,7 @@ export namespace Prisma {
   export type ResourceMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    link?: SortOrder
     type?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
@@ -3630,6 +3694,7 @@ export namespace Prisma {
   export type ResourceMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    link?: SortOrder
     type?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
@@ -3661,6 +3726,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -3736,6 +3805,11 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3775,6 +3849,14 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3809,6 +3891,7 @@ export namespace Prisma {
   export type ResourceCreateWithoutAuthorInput = {
     id?: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords?: ResourceCreatekeywordsInput | string[]
     createdAt?: Date | string
@@ -3817,6 +3900,7 @@ export namespace Prisma {
   export type ResourceUncheckedCreateWithoutAuthorInput = {
     id?: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords?: ResourceCreatekeywordsInput | string[]
     createdAt?: Date | string
@@ -3854,6 +3938,7 @@ export namespace Prisma {
     NOT?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
     id?: StringFilter<"Resource"> | string
     name?: StringFilter<"Resource"> | string
+    link?: StringFilter<"Resource"> | string
     type?: EnumResourceTypeFilter<"Resource"> | $Enums.ResourceType
     keywords?: StringNullableListFilter<"Resource">
     authorId?: StringFilter<"Resource"> | string
@@ -3865,6 +3950,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    isAdmin?: boolean
     createdAt?: Date | string
   }
 
@@ -3873,6 +3959,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    isAdmin?: boolean
     createdAt?: Date | string
   }
 
@@ -3897,6 +3984,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -3905,12 +3993,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResourceCreateManyAuthorInput = {
     id?: string
     name: string
+    link: string
     type: $Enums.ResourceType
     keywords?: ResourceCreatekeywordsInput | string[]
     createdAt?: Date | string
@@ -3919,6 +4009,7 @@ export namespace Prisma {
   export type ResourceUpdateWithoutAuthorInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3927,6 +4018,7 @@ export namespace Prisma {
   export type ResourceUncheckedUpdateWithoutAuthorInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3935,6 +4027,7 @@ export namespace Prisma {
   export type ResourceUncheckedUpdateManyWithoutAuthorInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
     type?: EnumResourceTypeFieldUpdateOperationsInput | $Enums.ResourceType
     keywords?: ResourceUpdatekeywordsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

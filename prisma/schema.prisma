@@ -19,6 +19,7 @@ model User {
   name      String
   email     String     @unique
   password  String
+  isAdmin   Boolean    @default(false)
   resources Resource[]
   createdAt DateTime   @default(now())
 }
@@ -26,6 +27,7 @@ model User {
 model Resource {
   id        String     @id @default(uuid())
   name      String
+  link      String
   type      ResourceType
   keywords  String[]
   author    User       @relation(fields: [authorId], references: [id])

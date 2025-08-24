@@ -18,7 +18,24 @@ export interface Profile {
     links: Link
 }
 
-export interface ProfileRowProps {
-    heading: string;
-    profiles: Profile[]
+export interface MemberProfile {
+    id: number;
+    name: string;
+    designation: string;
+    image: string;
+}
+
+export interface TeamSectionProps {
+  faculties: Profile[];
+  leaders: Profile[];
+  coreMembers: MemberProfile[];
+}
+
+export interface Resource {
+  title: string;
+  subtitle: string;
+  description: string;
+  date: string;
+  author: string;
+  link: string;
 }
