@@ -40,9 +40,9 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value as "Blog" | "Video");
-              setPage(1); // reset page when filter changes
+              setPage(1);
             }}
-            className="border rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 dark:text-white"
+            className="border rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 dark:text-white mr-4"
           >
             <option value="Blog">Blog</option>
             <option value="Video">Video</option>

@@ -11,7 +11,7 @@ export const navmenu = [
     },
     {
         name: "Our Team",
-        href: "#our-team"
+        href: "/#our-team"
     },
     {
         name: "Resources",

@@ -14,6 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const signinSchema = z.object({
   email: z.string().email(),
@@ -28,9 +31,26 @@ export default function SignInPage() {
       password: "",
     },
   });
+  const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof signinSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof signinSchema>) {
+    try {
+      // Send form data to backend
+      const res = await axios.post("/api/user/signin", values);
+      console.log(res)
+
+      if (res.status === 200) {
+        toast.success(`${res.data.message}`);
+        router.push("/dashboard");
+      }
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.error(error.response?.data.message)
+        toast.error(`${error.response?.data.message}`);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
   }
 
   return (
@@ -82,7 +102,7 @@ export default function SignInPage() {
                 )}
               />
 
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full text-white">
                 Sign In
               </Button>
             </form>
