@@ -1,3 +1,4 @@
+import { Resource } from "@/lib/generated/prisma";
 
 export interface SectionHeadingProps {
   title: string;
@@ -31,11 +32,9 @@ export interface TeamSectionProps {
   coreMembers: MemberProfile[];
 }
 
-export interface Resource {
-  title: string;
-  subtitle: string;
-  description: string;
-  date: string;
-  author: string;
-  link: string;
-}
+export type ResourceWithAuthor = Resource & {
+  author: {
+    id: string;
+    name: string;
+  };
+};

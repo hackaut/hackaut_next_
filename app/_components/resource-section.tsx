@@ -1,89 +1,114 @@
-import { ResourceCard } from "./resource-card";
+"use client";
+
+import { useState } from "react";
+import ResourceCard from "./resource-card";
+import { ResourceWithAuthor } from "@/constants/type";
 import SectionHeading from "./section-heading";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
-export const resourcesData = [
-  {
-    title: "Dissecting JavaScript II",
-    subtitle: "",
-    description:
-      "Second part of the Dissecting JavaScript series, exploring advanced concepts in depth.",
-    date: "28 Jun, 2024",
-    author: "Ritochit Ghosh",
-    link: "/dissecting-javascript-ii",
-  },
-  {
-    title: "Dissecting JavaScript I",
-    subtitle: "",
-    description:
-      "First part of the Dissecting JavaScript series, covering core language features and fundamentals.",
-    date: "11 May, 2024",
-    author: "Ritochit Ghosh",
-    link: "/dissecting-javascript-i",
-  },
-  {
-    title: "Demarking Markdown : Simplifying Text Formatting for Developers",
-    subtitle: "",
-    description:
-      "A practical guide to understanding and leveraging Markdown for documentation and content creation.",
-    date: "26 Apr, 2024",
-    author: "Ritochit Ghosh",
-    link: "/demarking-markdown",
-  },
-  {
-    title: "Tech Journey: A Fresh Start (pt. 1)",
-    subtitle: "",
-    description:
-      "Personal reflections on beginning the journey as a developer and lessons learned in the early phase.",
-    date: "15 Dec, 2023",
-    author: "Ritochit Ghosh",
-    link: "/tech-journey-a-fresh-start",
-  },
-  {
-    title: "Introduction to GenAI - All The Theory You Need To Know",
-    subtitle: "",
-    description:
-      "Comprehensive introduction to Generative AI — history, theory, and core concepts explained for developers.",
-    date: "14 Aug, 2025",
-    author: "Ritochit Ghosh",
-    link: "/introduction-to-genai",
-  },
-  {
-    title: "Introduction to TypeScript : Guide to Static Typing in JavaScript",
-    subtitle: "",
-    description:
-      "Step-by-step guide to TypeScript fundamentals, type safety, and how it enhances JavaScript projects.",
-    date: "17 Mar, 2025",
-    author: "Ritochit Ghosh",
-    link: "/introduction-to-typescript",
-  },
-  {
-    title: "Tech Journey: How I spent my First Year ? 🤔",
-    subtitle: "",
-    description:
-      "Sharing personal experiences and key takeaways from the first year in tech.",
-    date: "22 Oct, 2024",
-    author: "Ritochit Ghosh",
-    link: "/tech-journey-how-i-spent-my-first-year",
-  },
-];
+export default function ResourceSection({ resources }: { resources: ResourceWithAuthor[] }) {
+  const [filter, setFilter] = useState<"Blog" | "Video">("Blog");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 6; // show 6 per page
 
+  // Filtered resources
+  const filteredResources = resources.filter(
+    (r) => r.type.toLowerCase() === filter.toLowerCase()
+  );
 
-export const ResourcesSection = () => {
+  const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+
+  const paginatedResources = filteredResources.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
   return (
-    <section className="w-full max-w-[1152px] px-6 md:px-12 lg:px-20 py-12 mx-auto">
-      {/* Title */}
-       <SectionHeading title="Resources" />
+    <section className="w-full max-w-[1152px] p-2 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300">
+      <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 flex flex-col h-full">
+        {/* Top bar */}
+        <div className="flex items-center justify-between mb-6">
+          <SectionHeading title="Resources" />
+          <select
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value as "Blog" | "Video");
+              setPage(1); // reset page when filter changes
+            }}
+            className="border rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 dark:text-white"
+          >
+            <option value="Blog">Blog</option>
+            <option value="Video">Video</option>
+          </select>
+        </div>
 
-      <p className="text-gray-700 dark:text-gray-300 mb-10">
-        Here are the blogs wriiten and published by our members. Feel free to check it out! Be a member and contribute towards its enrichment.
-      </p>
+        {/* Grid */}
+        {paginatedResources.length === 0 ? (
+          <p className="text-gray-500 text-center min-h-[200px] flex items-center justify-center">
+            No {filter}s available.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {paginatedResources.map((resource) => (
+              <ResourceCard key={resource.id} resource={resource} />
+            ))}
+          </div>
+        )}
 
-      {/* Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {resourcesData.map((res, i) => (
-          <ResourceCard key={i} resource={res} />
-        ))}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-6 flex justify-center">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (page > 1) setPage(page - 1);
+                    }}
+                    className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === i + 1}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setPage(i + 1);
+                      }}
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (page < totalPages) setPage(page + 1);
+                    }}
+                    className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
       </div>
     </section>
   );
-};
+}

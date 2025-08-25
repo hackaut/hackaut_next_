@@ -6,8 +6,16 @@ import { prisma } from "@/utils/client";
 export async function GET() {
   try {
     const resources = await prisma.resource.findMany({
-      include: { author: true },
-    });
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
     return NextResponse.json(resources, { status: 200 }); // filter-out based on selected fields
   } catch (error) {
@@ -30,6 +38,24 @@ export async function POST(req: NextRequest) {
         { message: "Missing required fields" },
         { status: 400 }
       );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: authorId }
+    });
+    if (!user) {
+      return NextResponse.json(
+        { message: "Unauthorized!" },
+        { status: 409 }
+      )
+    }
+    
+    const isAllowed = user.isAdmin;
+    if (!isAllowed) {
+      return NextResponse.json(
+        { message: "Require Admin access!" },
+        { status: 409 }
+      )
     }
 
     const resource = await prisma.resource.create({

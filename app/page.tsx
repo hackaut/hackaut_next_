@@ -2,7 +2,8 @@ import { coreMembersProfile, facultyProfiles, leadersProfile } from "@/constants
 import FeaturesSection from "./_components/features-section";
 import HeroSection from "./_components/hero-section";
 import TeamSection from "./_components/our-team-seaction";
-import { ResourcesSection } from "./_components/resource-section";
+import ResourceSectionWrapper from "./_components/resource-section-provider";
+import { GallerySection } from "./_components/gallery-section";
 
 export default function Home() {
   
@@ -11,7 +12,8 @@ export default function Home() {
       <HeroSection />
       <FeaturesSection />
       <TeamSection faculties={facultyProfiles} leaders={leadersProfile} coreMembers={coreMembersProfile}/>
-      <ResourcesSection />
+      <ResourceSectionWrapper />
+      <GallerySection />
 
       <div className="h-full"></div>
     </div>

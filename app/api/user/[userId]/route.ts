@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, { params }: {
                 { status: 404 }
             )
         }
-        
+
         return NextResponse.json(user, { status: 200 });
     } catch (error) {
         console.error("GET_USER_BY_ID error: ", error);
@@ -26,6 +26,40 @@ export async function GET(req: NextRequest, { params }: {
                 message: "Server error",
                 error: (error as Error).message,
             },
+            { status: 500 }
+        );
+    }
+}
+
+export async function PATCH(req: NextRequest) {
+    try {
+        const body = await req.json();
+        const { email } = body;
+
+        const user = await prisma.user.findUnique({
+            where: { email }
+        });
+        if (!user) {
+            return NextResponse.json(
+                { message: "User not found!" },
+                { status: 404 }
+            )
+        }
+
+        const updated = await prisma.user.update({
+            where: { id: user.id },
+            data: body
+        });
+
+        return NextResponse.json(
+            { message: "User updated successfully!" },
+            { status: 200 }
+        )
+
+    } catch (error) {
+        console.error("UPDATE_USER error:", error);
+        return NextResponse.json(
+            { message: "Server error", error: (error as Error).message },
             { status: 500 }
         );
     }
