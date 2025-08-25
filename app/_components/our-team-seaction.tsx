@@ -18,7 +18,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
   coreMembers,
 }) => {
   return (
-    <div className="w-full max-w-[1152px] flex flex-col justify-center items-start bg-[#ebf5fa] dark:bg-[#0b1921]/90 px-4 sm:px-6 md:px-8 py-6 md:py-8 rounded-2xl gap-y-4 transition-colors duration-300">
+    <div className="w-full max-w-[1152px] flex flex-col justify-center items-start bg-[#ebf5fa] dark:bg-[#0b1921]/90 px-4 sm:px-6 md:px-8 py-6 md:py-8 rounded-2xl gap-y-4 transition-colors duration-300" id="our-team">
       <SectionHeading title="Our Team" />
 
       <p className="text-base sm:text-lg tracking-tight px-2 sm:px-4 text-accent-foreground dark:text-gray-300">

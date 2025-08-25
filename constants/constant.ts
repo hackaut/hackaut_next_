@@ -1,12 +1,30 @@
 import { MemberProfile, Profile } from "./type";
 
 export const navmenu = [
-    "Home",
-    "About Us",
-    "Our Team",
-    "Resources",
-    "Testimonials",
-    "Contact Us",
+    {
+        name: "Home",
+        href: "/",
+    },
+    {
+        name: "About Us",
+        href: "/aboutus"
+    },
+    {
+        name: "Our Team",
+        href: "#our-team"
+    },
+    {
+        name: "Resources",
+        href: "/#resources"
+    },
+    {
+        name: "Events",
+        href: "/events"
+    },
+    {
+        name: "Contact Us",
+        href: "/#contact-us"
+    }
 ];
 
 export const features = [

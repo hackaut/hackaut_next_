@@ -31,7 +31,7 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
   );
 
   return (
-    <section className="w-full max-w-[1152px] p-2 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300">
+    <section className="w-full max-w-[1152px] p-2 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300" id="resources">
       <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 flex flex-col h-full">
         {/* Top bar */}
         <div className="flex items-center justify-between mb-6">

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const HeroSection = () => {
   return (
     <div className="flex justify-between items-center h-auto lg:h-[564px] w-full max-w-[1152px] mt-24 px-6 py-10 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300">
-      
+
       <div className="max-w-[404px] h-auto flex flex-col justify-between px-2">
         <div className="flex flex-col items-start">
           <span className="font-extrabold text-6xl leading-[1.1] text-black dark:text-white">
@@ -21,12 +22,14 @@ const HeroSection = () => {
           us today.
         </div>
         <div className="flex flex-wrap gap-4 mt-6">
-          <Button
-            className="h-[55px] w-[160px] bg-[#0077B6] dark:bg-[#0077B6]/70 hover:bg-[#005f94] dark:hover:bg-[#0077B6]/90 text-xl text-white transition-all"
-            variant={"default"}
-          >
-            Join Us
-          </Button>
+          <Link href={"/signup/"}>
+            <Button
+              className="h-[55px] w-[160px] bg-[#0077B6] dark:bg-[#0077B6]/70 hover:bg-[#005f94] dark:hover:bg-[#0077B6]/90 text-xl text-white transition-all"
+              variant={"default"}
+            >
+              Join Us
+            </Button>
+          </Link>
           <Button
             className="h-[55px] w-[160px] text-xl bg-transparent border-2 border-[#0077B6] dark:border-[#0077B6]/70 text-[#0077B6] dark:text-[#0077B6]/70 hover:bg-[#0077B6]/10 dark:hover:bg-[#0077B6]/20 transition-all"
             variant={"outline"}
