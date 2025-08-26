@@ -4,6 +4,7 @@ import HeroSection from "./_components/hero-section";
 import TeamSection from "./_components/our-team-seaction";
 import ResourceSectionWrapper from "./_components/resource-section-provider";
 import { GallerySection } from "./_components/gallery-section";
+import ContactUs from "./_components/contact-us";
 
 export default function Home() {
   
@@ -14,6 +15,7 @@ export default function Home() {
       <TeamSection faculties={facultyProfiles} leaders={leadersProfile} coreMembers={coreMembersProfile}/>
       <ResourceSectionWrapper />
       <GallerySection />
+      <ContactUs />
 
       <div className="h-full"></div>
     </div>
