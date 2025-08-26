@@ -4,28 +4,28 @@ import SectionHeading from "./section-heading";
 export function GallerySection() {
   const cards = [
     {
-      title: "Forest Adventure",
-      src: "https://images.unsplash.com/photo-1518710843675-2540dd79065c?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3",
+      title: "codeXellence 2k24",
+      src: "./codeXellence.jpeg",
     },
     {
-      title: "Valley of life",
-      src: "https://images.unsplash.com/photo-1600271772470-bd22a42787b3?q=80&w=3072&auto=format&fit=crop&ixlib=rb-4.0.3",
+      title: "Team 2k24-25",
+      src: "./hackaut.png",
     },
     {
-      title: "Sala behta hi jayega",
-      src: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=3070&auto=format&fit=crop&ixlib=rb-4.0.3",
+      title: "Deep Dive Into Dev",
+      src: "./event.jpeg",
     },
     {
-      title: "Camping is for pros",
-      src: "https://images.unsplash.com/photo-1486915309851-b0cc1f8a0084?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3",
+      title: "Introductory session",
+      src: "./intro.jpeg",
     },
     {
-      title: "The road not taken",
-      src: "https://images.unsplash.com/photo-1507041957456-9c397ce39c97?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3",
+      title: "MAKATHON 2k24",
+      src: "./makathon.jpeg",
     },
     {
-      title: "The First Rule",
-      src: "https://assets.aceternity.com/the-first-rule.png",
+      title: "Prize Distribution",
+      src: "./prize.jpeg",
     },
   ];
 
