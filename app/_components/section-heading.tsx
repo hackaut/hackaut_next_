@@ -7,7 +7,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({ title }) => {
     .map((ch) => ch.toUpperCase())
     .join("");
   return (
-    <div className="font-bold text-8xl font-stretch-50% text-[#3a97c7]">
+    <div className="font-bold text-6xl lg:text-8xl font-stretch-50% text-[#3a97c7]">
       {capitalizedTitle}
     </div>
   );

@@ -35,7 +35,7 @@ export function GallerySection() {
       <SectionHeading title="Gallery" />
 
       {/* Subtitle */}
-      <p className="text-base sm:text-lg tracking-tight px-2 sm:px-4 text-accent-foreground dark:text-gray-300 text-center md:text-left">
+      <p className="text-base sm:text-lg tracking-tight px-2 sm:px-4 text-accent-foreground dark:text-gray-300 md:text-left">
         Here are some moments from the events that were conducted by us. 
         Let’s make some more of them together.
       </p>

@@ -58,7 +58,7 @@ export const features = [
 
 export const facultyProfiles: Profile[] = [
     {
-        image: "https://makautwb.ac.in/datas/users/45-saikat_pic%20(1).png",
+        image: "./assets/o_team/saikat_basu.jpg",
         name: "Saikat Basu",
         role: "Principal Advisor",
         stacks: "ML, IoT, Cryptography",
@@ -70,7 +70,7 @@ export const facultyProfiles: Profile[] = [
         }
     },
     {
-        image: "https://it.makautwb.ac.in/images/faculty/5.jpg",
+        image: "./assets/o_team/joy.jpg",
         name: "Joy Samaddar",
         role: "Chairman",
         stacks: "Web Analytics, Cybersecurity",

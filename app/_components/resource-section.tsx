@@ -13,7 +13,11 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export default function ResourceSection({ resources }: { resources: ResourceWithAuthor[] }) {
+export default function ResourceSection({
+  resources,
+}: {
+  resources: ResourceWithAuthor[];
+}) {
   const [filter, setFilter] = useState<"Blog" | "Video">("Blog");
   const [page, setPage] = useState(1);
   const itemsPerPage = 6; // show 6 per page
@@ -31,10 +35,13 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
   );
 
   return (
-    <section className="w-full max-w-[1152px] p-2 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300" id="resources">
+    <section
+      className="w-full max-w-[1152px] p-2 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-300/60 dark:border-white/20 shadow-md transition-all duration-300"
+      id="resources"
+    >
       <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 flex flex-col h-full">
         {/* Top bar */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <SectionHeading title="Resources" />
           <select
             value={filter}
@@ -42,7 +49,7 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
               setFilter(e.target.value as "Blog" | "Video");
               setPage(1);
             }}
-            className="border rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 dark:text-white mr-4"
+            className="border rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 dark:text-white sm:ml-4 w-full sm:w-auto"
           >
             <option value="Blog">Blog</option>
             <option value="Video">Video</option>
@@ -62,7 +69,6 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
           </div>
         )}
 
-
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-6 flex justify-center">
@@ -75,7 +81,9 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
                       e.preventDefault();
                       if (page > 1) setPage(page - 1);
                     }}
-                    className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                    className={
+                      page === 1 ? "pointer-events-none opacity-50" : ""
+                    }
                   />
                 </PaginationItem>
 
@@ -101,7 +109,9 @@ export default function ResourceSection({ resources }: { resources: ResourceWith
                       e.preventDefault();
                       if (page < totalPages) setPage(page + 1);
                     }}
-                    className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+                    className={
+                      page === totalPages ? "pointer-events-none opacity-50" : ""
+                    }
                   />
                 </PaginationItem>
               </PaginationContent>
